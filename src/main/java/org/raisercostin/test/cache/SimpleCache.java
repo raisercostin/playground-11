@@ -1,43 +1,55 @@
 package org.raisercostin.test.cache;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.raisercostin.test.cache.replacement.RandomReplacementStrategy;
+import org.raisercostin.test.cache.replacement.ReplacementStrategy;
+import org.raisercostin.test.cache.storage.MemoryStorageStrategy;
+import org.raisercostin.test.cache.storage.StorageStrategy;
 
-public class SimpleCache<T1, T2> implements Cache<T1,T2> {
-	private Map<T1,T2> map=new HashMap<T1,T2>();
+public class SimpleCache<Key, Value> implements Cache<Key, Value> {
+    private StorageStrategy<Key, Value> storage;
+    private ReplacementStrategy<Key> replacement;
 
-	@Override
-	public void put(T1 key, T2 value) {
-		map.put(key, value);
-	}
+    public SimpleCache(StorageStrategy<Key, Value> storage, ReplacementStrategy<Key> replacement) {
+	this.storage = storage;
+	this.replacement = replacement;
+    }
 
-	@Override
-	public T2 get(T1 key) {
-		return map.get(key);
-	}
+    @Override
+    public void put(Key key, Value value) {
+	Key replacedKey = replacement.update(key);
+	storage.remove(key);
+	storage.save(key, value);
+    }
 
-	@Override
-	public boolean containsKey(T1 key) {
-		return map.containsKey(key);
-	}
+    @Override
+    public Value get(Key key) {
+	return storage.loadOr(key, null);
+    }
 
-	@Override
-	public T2 remove(T1 key) {
-		return map.remove(key);
-	}
+    @Override
+    public boolean containsKey(Key key) {
+	return storage.containsKey(key);
+    }
 
-	@Override
-	public boolean isEmpty() {
-		return map.isEmpty();
-	}
+    @Override
+    public Value remove(Key key) {
+	Value result = get(key);
+	storage.remove(key);
+	return result;
+    }
 
-	@Override
-	public int size() {
-		return map.size();
-	}
+    @Override
+    public boolean isEmpty() {
+	return storage.isEmpty();
+    }
 
-	@Override
-	public void clear() {
-		map.clear();
-	}
+    @Override
+    public int size() {
+	return storage.size();
+    }
+
+    @Override
+    public void clear() {
+	storage.clear();
+    }
 }
