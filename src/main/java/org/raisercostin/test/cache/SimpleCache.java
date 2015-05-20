@@ -1,43 +1,66 @@
 package org.raisercostin.test.cache;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.raisercostin.test.cache.replacement.CacheStrategy;
+import org.raisercostin.test.cache.storage.StorageStrategy;
 
-public class SimpleCache<T1, T2> implements Cache<T1,T2> {
-	private Map<T1,T2> map=new HashMap<T1,T2>();
+/**
+ * Class that have the responsibility of storing/removing the values according
+ * to the given replacement strategy.
+ */
+public class SimpleCache<Key, Value> implements Cache<Key, Value> {
+    public final StorageStrategy<Key, Value> storage;
+    public final CacheStrategy<Key> replacement;
 
-	@Override
-	public void put(T1 key, T2 value) {
-		map.put(key, value);
+    public SimpleCache(StorageStrategy<Key, Value> storage,
+	    CacheStrategy<Key> replacement) {
+	this.storage = storage;
+	this.replacement = replacement;
+    }
+
+    @Override
+    public void put(Key key, Value value) {
+	// if (!storage.containsKey(key)) {
+	Key replacedKey = replacement.update(key);
+	if (replacedKey != null) {
+	    System.out.println("add " + key + " replacing " + replacedKey);
+	    storage.remove(replacedKey);
+	} else {
+	    System.out.println("add " + key);
 	}
+	// }
+	storage.save(key, value);
+	System.out.println("      size=" + storage.size());
+    }
 
-	@Override
-	public T2 get(T1 key) {
-		return map.get(key);
-	}
+    @Override
+    public Value get(Key key) {
+	return storage.loadOr(key, null);
+    }
 
-	@Override
-	public boolean containsKey(T1 key) {
-		return map.containsKey(key);
-	}
+    @Override
+    public boolean containsKey(Key key) {
+	return storage.containsKey(key);
+    }
 
-	@Override
-	public T2 remove(T1 key) {
-		return map.remove(key);
-	}
+    @Override
+    public Value remove(Key key) {
+	Value result = get(key);
+	storage.remove(key);
+	return result;
+    }
 
-	@Override
-	public boolean isEmpty() {
-		return map.isEmpty();
-	}
+    @Override
+    public boolean isEmpty() {
+	return storage.size() == 0;
+    }
 
-	@Override
-	public int size() {
-		return map.size();
-	}
+    @Override
+    public int size() {
+	return storage.size();
+    }
 
-	@Override
-	public void clear() {
-		map.clear();
-	}
+    @Override
+    public void clear() {
+	storage.clear();
+    }
 }
