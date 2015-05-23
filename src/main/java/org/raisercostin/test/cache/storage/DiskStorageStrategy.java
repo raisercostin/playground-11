@@ -42,6 +42,7 @@ public class DiskStorageStrategy<Key> implements StorageStrategy<Key, String> {
 	}
     }
 
+    /** Could be overridden in order to change the Key serialization algorithm*/
     protected String toStringKey(Key key) {
 	return key.toString();
     }

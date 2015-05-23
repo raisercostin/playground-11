@@ -53,15 +53,15 @@ public class LeastRecentlyUsedCacheStrategy<Key> implements CacheStrategy<Key> {
 	return result;
     }
 
-    public int countHits() {
+    int countHits() {
 	return hits;
     }
 
-    public int countAll() {
+    int countAll() {
 	return all;
     }
 
-    public String state() {
+    String state() {
 	return keys.toString();
     }
 }
