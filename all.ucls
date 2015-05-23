@@ -4,7 +4,7 @@
   <interface id="1" language="java" name="org.raisercostin.test.cache.strategy.CacheStrategy" project="11" 
     file="/11/src/main/java/org/raisercostin/test/cache/strategy/CacheStrategy.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="234" y="-37"/>    
+    <position height="-1" width="-1" x="236" y="-20"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -34,7 +34,7 @@
   <interface id="4" language="java" name="org.raisercostin.test.cache.storage.StorageStrategy" project="11" 
     file="/11/src/main/java/org/raisercostin/test/cache/storage/StorageStrategy.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="523" y="-5"/>    
+    <position height="-1" width="-1" x="563" y="1"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -44,7 +44,7 @@
   <class id="5" language="java" name="org.raisercostin.test.cache.storage.MemoryStorageStrategy" project="11" 
     file="/11/src/main/java/org/raisercostin/test/cache/storage/MemoryStorageStrategy.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="590" y="212"/>    
+    <position height="-1" width="-1" x="600" y="256"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -54,7 +54,7 @@
   <class id="6" language="java" name="org.raisercostin.test.cache.storage.DiskStorageStrategy" project="11" 
     file="/11/src/main/java/org/raisercostin/test/cache/storage/DiskStorageStrategy.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="809" y="204"/>    
+    <position height="-1" width="-1" x="814" y="213"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
