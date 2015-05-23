@@ -2,34 +2,36 @@ package org.raisercostin.test.cache;
 
 import org.raisercostin.test.cache.replacement.CacheStrategy;
 import org.raisercostin.test.cache.storage.StorageStrategy;
+import org.slf4j.LoggerFactory;
 
 /**
  * Class that have the responsibility of storing/removing the values according
  * to the given replacement strategy.
  */
 public class SimpleCache<Key, Value> implements Cache<Key, Value> {
+    private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(SimpleCache.class);
     public final StorageStrategy<Key, Value> storage;
-    public final CacheStrategy<Key> replacement;
+    public final CacheStrategy<Key> strategy;
 
     public SimpleCache(StorageStrategy<Key, Value> storage,
 	    CacheStrategy<Key> replacement) {
 	this.storage = storage;
-	this.replacement = replacement;
+	this.strategy = replacement;
     }
 
     @Override
     public void put(Key key, Value value) {
 	// if (!storage.containsKey(key)) {
-	Key replacedKey = replacement.update(key);
+	Key replacedKey = strategy.update(key);
 	if (replacedKey != null) {
-	    System.out.println("add " + key + " replacing " + replacedKey);
+	    LOG.debug("add {} replacing {}", key,replacedKey);
 	    storage.remove(replacedKey);
 	} else {
-	    System.out.println("add " + key);
+	    LOG.debug("add {}", key);
 	}
 	// }
 	storage.save(key, value);
-	System.out.println("      size=" + storage.size());
+	LOG.debug("size={}", storage.size());
     }
 
     @Override

@@ -11,6 +11,8 @@ import org.raisercostin.test.cache.storage.DiskStorageStrategy;
 import org.raisercostin.test.cache.storage.MemoryStorageStrategy;
 
 public class SimpleCacheTest {
+    private final static org.slf4j.Logger LOG = org.slf4j.LoggerFactory
+	    .getLogger(SimpleCacheTest.class);
     private DiskStorageStrategy<Integer> storage;
     private SimpleCache<Integer, String> cache;
     private CacheTemplate<Integer, String> c;
@@ -46,7 +48,7 @@ public class SimpleCacheTest {
 		CACHE_MAX_ENTRIES), SEED, CACHE_MAX_ENTRIES, DATA_SIZE);
 	for (int i = 0; i < DATA_SIZE; i++) {
 	    int index = i;
-	    System.out.println(index);
+	    LOG.debug("{}",index);
 	    assertEquals(data.get(index), c.getOrCompute(index));
 	    // invariants
 	    assertTrue("Storage has " + storage.size()

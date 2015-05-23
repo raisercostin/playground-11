@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class LeastRecentlyUsedCacheStrategyTest {
+    private final static org.slf4j.Logger LOG = org.slf4j.LoggerFactory
+	    .getLogger(LeastRecentlyUsedCacheStrategyTest.class);
 
     @Test
     public void testHits() {
@@ -34,9 +36,9 @@ public class LeastRecentlyUsedCacheStrategyTest {
 	    String before = cache.state();
 	    Integer actual = cache.update(val[i][0]);
 	    String after = cache.state();
-	    //System.out.println("before="+before);
-	    System.out.println("after ="+after);
-	    assertEquals("Key "+val[i][0]+" should replace key "+val[i][1] + " but replaced "+actual,val[i][1], actual);
+	    LOG.debug("after = {}", after);
+	    assertEquals("Key " + val[i][0] + " should replace key "
+		    + val[i][1] + " but replaced " + actual, val[i][1], actual);
 	}
 	assertEquals(15, cache.countAll());
 	assertEquals(5, cache.countHits());
