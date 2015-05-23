@@ -26,3 +26,9 @@ Evaluation criteria for both homeworks(in ascending order):
 0)correctness - does the solution work?
 1)code clarity/structure
 2)performance
+
+
+
+TODO
+- multithreading test
+- LRU on DiskStorage reinitialization? - disk storage should store also a hint for CacheStrategy intialization as index?

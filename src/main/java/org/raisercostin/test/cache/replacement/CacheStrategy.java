@@ -20,7 +20,9 @@ public interface CacheStrategy<Key> {
     /**
      * Declares a used key and returns the replaced key.
      * @param key
-     * @return null if the update doesn't return any other key
+     * @return key if the update is a hit
+     * @return null if the update is a miss and no key replacement is necessary
+     * @return otherKey if the update is a miss returns the otherKey that needs to be replaced by key
      */
     Key update(Key key);
 }

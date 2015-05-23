@@ -11,20 +11,26 @@ import org.raisercostin.test.cache.replacement.CacheStrategy;
 public class ReplacementStrategyTest {
     @Test
     public void testFifoReplacementOperations() {
-	CacheStrategy<String> rep = new RandomCacheStrategy<String>(5, new Random(10));
-	assertEquals(null, rep.update("1"));
-	assertEquals(null, rep.update("2"));
-	assertEquals("1", rep.update("3"));
-	assertEquals("2", rep.update("2"));
-	assertEquals(null, rep.update("4"));
-	assertEquals("4", rep.update("5"));
-	assertEquals(null, rep.update("6"));
-	assertEquals("3", rep.update("7"));
-	assertEquals("5", rep.update("8"));
-	assertEquals(null, rep.update("9"));
-	assertEquals("7", rep.update("10"));
-	assertEquals("9", rep.update("11"));
-	assertEquals("8", rep.update("12"));
-	assertEquals("10", rep.update("13"));
+	CacheStrategy<Integer> rep = new RandomCacheStrategy<Integer>(5,
+		new Random(10));
+	assertEq(null, rep.update(1));
+	assertEq(null, rep.update(2));
+	assertEq(1, rep.update(3));
+	assertEq(2, rep.update(2));
+	assertEq(2, rep.update(4));
+	assertEq(null, rep.update(5));
+	assertEq(5, rep.update(6));
+	assertEq(null, rep.update(7));
+	assertEq(3, rep.update(8));
+	assertEq(6, rep.update(9));
+	assertEq(null, rep.update(10));
+	assertEq(8, rep.update(11));
+	assertEq(10, rep.update(12));
+	assertEq(9, rep.update(13));
+    }
+
+    //needed for automatic boxing
+    private void assertEq(Integer expected, Integer actual) {
+	assertEquals(expected, actual);
     }
 }
