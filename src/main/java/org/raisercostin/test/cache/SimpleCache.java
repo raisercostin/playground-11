@@ -9,12 +9,14 @@ import org.slf4j.LoggerFactory;
  * to the given replacement strategy.
  */
 public class SimpleCache<Key, Value> implements Cache<Key, Value> {
-    private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(SimpleCache.class);
+    private final static org.slf4j.Logger LOG = LoggerFactory
+	    .getLogger(SimpleCache.class);
     public final StorageStrategy<Key, Value> storage;
     public final CacheStrategy<Key> strategy;
 
     public SimpleCache(StorageStrategy<Key, Value> storage,
 	    CacheStrategy<Key> replacement) {
+	replacement.initialize(storage);
 	this.storage = storage;
 	this.strategy = replacement;
     }
@@ -24,7 +26,7 @@ public class SimpleCache<Key, Value> implements Cache<Key, Value> {
 	// if (!storage.containsKey(key)) {
 	Key replacedKey = strategy.update(key);
 	if (replacedKey != null) {
-	    LOG.debug("add {} replacing {}", key,replacedKey);
+	    LOG.debug("add {} replacing {}", key, replacedKey);
 	    storage.remove(replacedKey);
 	} else {
 	    LOG.debug("add {}", key);
@@ -46,9 +48,11 @@ public class SimpleCache<Key, Value> implements Cache<Key, Value> {
 
     @Override
     public Value remove(Key key) {
-	Value result = get(key);
-	storage.remove(key);
-	return result;
+	throw new IllegalAccessError(
+		"Method should not be exposed. Is an operation meant for storage. @see put operation.");
+	// Value result = get(key);
+	// storage.remove(key);
+	// return result;
     }
 
     @Override

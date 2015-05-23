@@ -1,5 +1,7 @@
 package org.raisercostin.test.cache.strategy;
 
+import org.raisercostin.test.cache.storage.StorageStrategy;
+
 /**
  * A cache replacement strategy.
  *
@@ -17,6 +19,8 @@ package org.raisercostin.test.cache.strategy;
  *
  */
 public interface CacheStrategy<Key> {
+    /**Allows the strategy to read the storage state on reinitialization. Needed mostly for DiskStorage.*/
+    <T> void initialize(StorageStrategy<Key, T> storage);
     /**
      * Notifies the strategy that a new key was needed and returns the old key that occupied the slot (null, same key, otherDifferentKey).
      * @param key

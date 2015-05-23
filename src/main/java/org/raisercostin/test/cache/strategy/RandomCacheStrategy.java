@@ -2,6 +2,8 @@ package org.raisercostin.test.cache.strategy;
 
 import java.util.Random;
 
+import org.raisercostin.test.cache.storage.StorageStrategy;
+
 /**
  * Random Replacement (RR) Randomly selects a candidate item and discards it to
  * make space when necessary. This algorithm does not require keeping any
@@ -21,6 +23,11 @@ public class RandomCacheStrategy<Key> implements CacheStrategy<Key> {
     public RandomCacheStrategy(int maxKeys, Random random) {
 	this.keys = (Key[]) new Object[maxKeys];
 	this.random = random;
+    }
+
+    @Override
+    public <T> void initialize(StorageStrategy<Key, T> storage) {
+	storage.clear();
     }
 
     @Override

@@ -35,7 +35,9 @@ public class SimpleCacheTest {
 	int SEED = 10;
 	int CACHE_MAX_ENTRIES = 15;
 	int DATA_SIZE = 2123;
-	testInvariants(createRR(SEED, CACHE_MAX_ENTRIES), SEED,
+	testInvariants("storage1", createRR(CACHE_MAX_ENTRIES, SEED), SEED,
+		CACHE_MAX_ENTRIES, DATA_SIZE);
+	testInvariants("storage2", createLRU(CACHE_MAX_ENTRIES), SEED,
 		CACHE_MAX_ENTRIES, DATA_SIZE);
     }
 
@@ -44,26 +46,25 @@ public class SimpleCacheTest {
 	int SEED = 10;
 	int CACHE_MAX_ENTRIES = 16;
 	int DATA_SIZE = CACHE_MAX_ENTRIES - 1;
-	testInvariants(new LeastRecentlyUsedCacheStrategy<Integer>(
+	testInvariants("storage3", new LeastRecentlyUsedCacheStrategy<Integer>(
 		CACHE_MAX_ENTRIES), SEED, CACHE_MAX_ENTRIES, DATA_SIZE);
 	for (int i = 0; i < DATA_SIZE; i++) {
 	    int index = i;
-	    LOG.debug("{}",index);
+	    LOG.debug("{}", index);
 	    assertEquals(data.get(index), c.getOrCompute(index));
 	    // invariants
 	    assertTrue("Storage has " + storage.size()
 		    + " entries and should have a maximum of "
 		    + CACHE_MAX_ENTRIES, storage.size() <= CACHE_MAX_ENTRIES);
 	}
-	// assertEquals("All values should be in storage since cache is bigger than all data and all data was retrieved.",DATA_SIZE,
-	// storage.size());
     }
 
-    private <Key> void testInvariants(CacheStrategy<Integer> replacement,
-	    int SEED, int CACHE_MAX_ENTRIES, int DATA_SIZE) {
-	storage = new DiskStorageStrategy<Integer>(new File("target/storage2"));
+    private <Key> void testInvariants(String name,
+	    CacheStrategy<Integer> cacheStrategy, int SEED,
+	    int CACHE_MAX_ENTRIES, int DATA_SIZE) {
+	storage = new DiskStorageStrategy<Integer>(new File("target/" + name));
 	storage.clear();
-	cache = new SimpleCache<Integer, String>(storage, replacement);
+	cache = new SimpleCache<Integer, String>(storage, cacheStrategy);
 
 	Random r = new Random(SEED);
 	data = createUncachedData(DATA_SIZE);
@@ -87,10 +88,12 @@ public class SimpleCacheTest {
 	}
     }
 
-    private RandomCacheStrategy<Integer> createRR(int SEED,
-	    int CACHE_MAX_ENTRIES) {
-	return new RandomCacheStrategy<Integer>(CACHE_MAX_ENTRIES,
-		new Random(SEED));
+    private RandomCacheStrategy<Integer> createRR(int maxEntries, int seed) {
+	return new RandomCacheStrategy<Integer>(maxEntries, new Random(seed));
+    }
+
+    private CacheStrategy<Integer> createLRU(int maxEntries) {
+	return new LeastRecentlyUsedCacheStrategy<Integer>(maxEntries);
     }
 
     private Map<Integer, String> createUncachedData(int max) {

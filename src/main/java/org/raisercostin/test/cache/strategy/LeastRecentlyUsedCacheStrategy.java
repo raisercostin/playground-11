@@ -2,6 +2,8 @@ package org.raisercostin.test.cache.strategy;
 
 import java.util.*;
 
+import org.raisercostin.test.cache.storage.StorageStrategy;
+
 /**
  * Least Recently Used (LRU) Discards the least recently used items first. This
  * algorithm requires keeping track of what was used when, which is expensive if
@@ -28,6 +30,12 @@ public class LeastRecentlyUsedCacheStrategy<Key> implements CacheStrategy<Key> {
     public LeastRecentlyUsedCacheStrategy(int maxEntries) {
 	this.keys = new LinkedList<Key>();
 	this.maxEntries = maxEntries;
+    }
+
+    @Override
+    public <T> void initialize(StorageStrategy<Key, T> storage) {
+	//TODO improve the initialization without clearing the storage
+	storage.clear();
     }
 
     @Override
