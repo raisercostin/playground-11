@@ -1,6 +1,6 @@
 package org.raisercostin.test.cache.replacement;
 
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * Least Recently Used (LRU) Discards the least recently used items first. This
@@ -17,46 +17,51 @@ import java.util.Arrays;
  * @param <Key>
  */
 public class LeastRecentlyUsedCacheStrategy<Key> implements CacheStrategy<Key> {
+    private int maxEntries;
+    private Queue<Key> keys;
+    private int counter = 0;
+    //statistics
     private int all = 0;
     private int hits = 0;
-    private Key[] keys;
-    private int current = 0;
 
     @SuppressWarnings("unchecked")
     public LeastRecentlyUsedCacheStrategy(int maxEntries) {
-	this.keys = (Key[]) new Object[maxEntries];
+	this.keys = new LinkedList<Key>();
+	this.maxEntries = maxEntries;
     }
 
     @Override
     public Key update(Key key) {
-	boolean hit = contains(keys, key);
+	// O(n)
+	boolean hit = keys.contains(key);
 	Key result = key;
 	if (hit) {
 	    hits++;
+	    keys.remove(key);
+	    result = key;
 	} else {
-	    result = keys[current];
-	    keys[current] = key;
-	    current = (current + 1) % keys.length;
+	    if (counter >= maxEntries) {
+		result = keys.poll();
+		counter--;
+	    }else{
+		result = null;
+	    }
 	}
+	keys.add(key);
+	counter++;
 	all++;
 	return result;
     }
 
-    public static <T> boolean contains(final T[] array, final T v) {
-	for (final T e : array)
-	    if (e == v || v != null && v.equals(e))
-		return true;
-	return false;
-    }
-
     public int countHits() {
-	return 0;
+	return hits;
     }
 
     public int countAll() {
 	return all;
     }
-    public String state(){
-	return Arrays.toString(keys);
+
+    public String state() {
+	return keys.toString();
     }
 }

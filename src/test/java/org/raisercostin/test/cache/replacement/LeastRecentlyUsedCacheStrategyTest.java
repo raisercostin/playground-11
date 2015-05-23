@@ -39,6 +39,6 @@ public class LeastRecentlyUsedCacheStrategyTest {
 	    assertEquals("Key "+val[i][0]+" should replace key "+val[i][1] + " but replaced "+actual,val[i][1], actual);
 	}
 	assertEquals(15, cache.countAll());
-	assertEquals(4, cache.countHits());
+	assertEquals(5, cache.countHits());
     }
 }
