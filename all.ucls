@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.8" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
   realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
-  <interface id="1" language="java" name="org.raisercostin.test.cache.replacement.CacheStrategy" project="11" 
-    file="/11/src/main/java/org/raisercostin/test/cache/replacement/CacheStrategy.java" binary="false" 
+  <interface id="1" language="java" name="org.raisercostin.test.cache.strategy.CacheStrategy" project="11" 
+    file="/11/src/main/java/org/raisercostin/test/cache/strategy/CacheStrategy.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="234" y="-37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -11,8 +11,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="2" language="java" name="org.raisercostin.test.cache.replacement.RandomCacheStrategy" project="11" 
-    file="/11/src/main/java/org/raisercostin/test/cache/replacement/RandomCacheStrategy.java" binary="false" 
+  <class id="2" language="java" name="org.raisercostin.test.cache.strategy.RandomCacheStrategy" project="11" 
+    file="/11/src/main/java/org/raisercostin/test/cache/strategy/RandomCacheStrategy.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="65" y="180"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -21,9 +21,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="org.raisercostin.test.cache.replacement.LeastRecentlyUsedCacheStrategy" 
-    project="11" file="/11/src/main/java/org/raisercostin/test/cache/replacement/LeastRecentlyUsedCacheStrategy.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
+  <class id="3" language="java" name="org.raisercostin.test.cache.strategy.LeastRecentlyUsedCacheStrategy" project="11" 
+    file="/11/src/main/java/org/raisercostin/test/cache/strategy/LeastRecentlyUsedCacheStrategy.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="310" y="227"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      

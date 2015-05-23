@@ -32,3 +32,7 @@ Evaluation criteria for both homeworks(in ascending order):
 TODO
 - multithreading test
 - LRU on DiskStorage reinitialization? - disk storage should store also a hint for CacheStrategy intialization as index?
+
+CONVENTIONS
+- Methods that could return null or a value should be have the signature  <code> Value <operation>Or(Value value,Value nullValue) </code>
+- For such methods an Option<Value> type could be used but this will create a new object for every return. Since this is a caching solution more attention on performance is needed.

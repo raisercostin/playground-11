@@ -1,14 +1,14 @@
-package org.raisercostin.test.cache;
+package org.raisercostin.test.cache.strategy;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.Random;
 
 import org.junit.Test;
-import org.raisercostin.test.cache.replacement.RandomCacheStrategy;
-import org.raisercostin.test.cache.replacement.CacheStrategy;
+import org.raisercostin.test.cache.strategy.CacheStrategy;
+import org.raisercostin.test.cache.strategy.RandomCacheStrategy;
 
-public class ReplacementStrategyTest {
+public class RandomCacheStrategyTest {
     @Test
     public void testFifoReplacementOperations() {
 	CacheStrategy<Integer> rep = new RandomCacheStrategy<Integer>(5,

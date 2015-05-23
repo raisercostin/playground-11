@@ -1,4 +1,4 @@
-package org.raisercostin.test.cache.replacement;
+package org.raisercostin.test.cache.strategy;
 
 import java.util.*;
 
@@ -20,7 +20,7 @@ public class LeastRecentlyUsedCacheStrategy<Key> implements CacheStrategy<Key> {
     private int maxEntries;
     private Queue<Key> keys;
     private int counter = 0;
-    //statistics
+    // statistics
     private int all = 0;
     private int hits = 0;
 
@@ -32,18 +32,20 @@ public class LeastRecentlyUsedCacheStrategy<Key> implements CacheStrategy<Key> {
 
     @Override
     public Key update(Key key) {
-	// O(n)
+	// O(n) - might be externalized to StorageStrategy
 	boolean hit = keys.contains(key);
 	Key result = key;
 	if (hit) {
 	    hits++;
+	    // O(n) - removing a key in the middle
 	    keys.remove(key);
+	    counter--;
 	    result = key;
 	} else {
 	    if (counter >= maxEntries) {
 		result = keys.poll();
 		counter--;
-	    }else{
+	    } else {
 		result = null;
 	    }
 	}

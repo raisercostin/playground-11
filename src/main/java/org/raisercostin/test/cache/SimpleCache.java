@@ -1,7 +1,7 @@
 package org.raisercostin.test.cache;
 
-import org.raisercostin.test.cache.replacement.CacheStrategy;
 import org.raisercostin.test.cache.storage.StorageStrategy;
+import org.raisercostin.test.cache.strategy.CacheStrategy;
 import org.slf4j.LoggerFactory;
 
 /**

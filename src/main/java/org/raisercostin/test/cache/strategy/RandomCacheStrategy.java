@@ -1,4 +1,4 @@
-package org.raisercostin.test.cache.replacement;
+package org.raisercostin.test.cache.strategy;
 
 import java.util.Random;
 

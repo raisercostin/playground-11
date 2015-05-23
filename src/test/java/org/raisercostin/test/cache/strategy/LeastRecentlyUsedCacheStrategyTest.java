@@ -1,8 +1,9 @@
-package org.raisercostin.test.cache.replacement;
+package org.raisercostin.test.cache.strategy;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.raisercostin.test.cache.strategy.LeastRecentlyUsedCacheStrategy;
 
 public class LeastRecentlyUsedCacheStrategyTest {
     private final static org.slf4j.Logger LOG = org.slf4j.LoggerFactory

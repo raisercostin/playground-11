@@ -6,9 +6,9 @@ import java.io.File;
 import java.util.*;
 
 import org.junit.Test;
-import org.raisercostin.test.cache.replacement.*;
 import org.raisercostin.test.cache.storage.DiskStorageStrategy;
 import org.raisercostin.test.cache.storage.MemoryStorageStrategy;
+import org.raisercostin.test.cache.strategy.*;
 
 public class SimpleCacheTest {
     private final static org.slf4j.Logger LOG = org.slf4j.LoggerFactory

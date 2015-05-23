@@ -1,4 +1,4 @@
-package org.raisercostin.test.cache;
+package org.raisercostin.test.cache.storage;
 
 import static org.junit.Assert.assertEquals;
 
