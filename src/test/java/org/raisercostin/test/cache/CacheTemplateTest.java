@@ -3,10 +3,12 @@ package org.raisercostin.test.cache;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Random;
+import java.util.concurrent.*;
 
 import org.junit.Test;
 
 public class CacheTemplateTest {
+	private final static org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(CacheTemplateTest.class);
 	@Test
 	public void testBasicOperations() {
 		CacheTemplate<Integer, String> cache = CacheTemplate.createSimpleMemoryLRU(5);
@@ -20,7 +22,7 @@ public class CacheTemplateTest {
 		int requests = exerciseCache1(cache);
 		assertEquals(requests, cache.requestsCounter());
 		assertEquals(3, cache.hitsCounter());
-		requests += exerciseCache2(cache);
+		requests += exerciseCache2(cache,10);
 		assertEquals(requests, cache.requestsCounter());
 		assertEquals(9, cache.hitsCounter());
 	}
@@ -31,9 +33,31 @@ public class CacheTemplateTest {
 		int requests = exerciseCache1(cache);
 		assertEquals(requests, cache.requestsCounter());
 		assertEquals(5, cache.hitsCounter());
-		requests += exerciseCache2(cache);
+		requests += exerciseCache2(cache,10);
 		assertEquals(requests, cache.requestsCounter());
 		assertEquals(14, cache.hitsCounter());
+	}
+
+	@Test
+	public void testMultithreadingLRU() throws InterruptedException {
+		final CacheTemplate<Integer, String> cache = CacheTemplate.createSimpleMemoryLRU(3);
+		final Random r = new Random(10);
+		final int cacheRequestsPerThread = 10;
+		int threads = 5;
+		ExecutorService pool = Executors.newFixedThreadPool(threads);
+		for (int i = 0; i < threads; i++) {
+			pool.submit(new Runnable() {
+				@Override
+				public void run() {
+					exerciseCache3(cache,r,cacheRequestsPerThread);
+					LOG.debug("thread finished.");
+				}
+			});
+		}
+		pool.shutdown();
+		assertEquals(true,pool.awaitTermination(10, TimeUnit.SECONDS));
+		assertEquals(threads * cacheRequestsPerThread, cache.requestsCounter());
+		assertEquals(4, cache.hitsCounter());
 	}
 
 	private int exerciseCache1(CacheTemplate<Integer, String> cache) {
@@ -44,12 +68,15 @@ public class CacheTemplateTest {
 		return vals.length;
 	}
 
-	private int exerciseCache2(CacheTemplate<Integer, String> cache) {
-		Random r = new Random(11);
-		for (int i = 0; i < 100; i++) {
+	private int exerciseCache2(CacheTemplate<Integer, String> cache, int cacheRequests) {
+		exerciseCache3(cache, new Random(11),cacheRequests);
+		return cacheRequests;
+	}
+
+	private void exerciseCache3(CacheTemplate<Integer, String> cache, Random r, int cacheRequests) {
+		for (int i = 0; i < cacheRequests; i++) {
 			Integer j = r.nextInt(50);
 			cache.getOr(j, "value" + j);
 		}
-		return 100;
 	}
 }

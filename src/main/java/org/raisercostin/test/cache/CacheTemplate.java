@@ -15,7 +15,7 @@ public class CacheTemplate<Key, Value> {
 
 	public static <Key, Value> CacheTemplate<Key, Value> createSimpleMemoryRandom(int maxEntries) {
 		return create(new SimpleCache<Key, Value>(new MemoryStorageStrategy<Key, Value>(),
-				new RandomCacheStrategy<Key>(maxEntries,new Random(10))));
+				new RandomCacheStrategy<Key>(maxEntries, new Random(10))));
 	}
 
 	public static <Key, Value> CacheTemplate<Key, Value> create(ObservableCache<Key, Value> cache) {
@@ -28,6 +28,8 @@ public class CacheTemplate<Key, Value> {
 
 	private ObservableCache<Key, Value> cache;
 	private Map<Key, Value> data;
+	// encapsulated inside lock object not to be used by external objects/clients
+	private final Object locker = new Object();
 
 	private CacheTemplate(ObservableCache<Key, Value> cache, Map<Key, Value> data) {
 		this.cache = cache;
@@ -36,40 +38,50 @@ public class CacheTemplate<Key, Value> {
 
 	/** Returns the value from cache or gets one from supplier (as a Map now). */
 	public Value getOrLoad(Key key) {
-		Value result = cache.get(key);
-		if (result == null) {
-			result = data.get(key);
-			if (result != null)
-				cache.put(key, result);
+		synchronized (locker) {
+			Value result = cache.get(key);
+			if (result == null) {
+				result = data.get(key);
+				if (result != null)
+					cache.put(key, result);
+			}
+			return result;
 		}
-		return result;
 	}
 
 	/** Returns the value from cache or onMissValue if is not found. */
 	public Value getOr(Key key, Value onMissValue) {
-		Value result = cache.get(key);
-		if (result == null) {
-			result = onMissValue;
-			if (result != null)
-				cache.put(key, result);
+		synchronized (locker) {
+			Value result = cache.get(key);
+			if (result == null) {
+				result = onMissValue;
+				if (result != null)
+					cache.put(key, result);
+			}
+			return result;
 		}
-		return result;
 	}
 
 	/** Returns the value from cache or throws an exception. Useful only for test? */
 	public Value get(Key key) {
-		Value result = cache.get(key);
-		if (result == null) {
-			throw new IllegalStateException("The value should be in cache.");
+		synchronized (locker) {
+			Value result = cache.get(key);
+			if (result == null) {
+				throw new IllegalStateException("The value should be in cache.");
+			}
+			return result;
 		}
-		return result;
 	}
 
 	public int hitsCounter() {
-		return cache.hitsCounter();
+		synchronized (locker) {
+			return cache.hitsCounter();
+		}
 	}
 
 	public int requestsCounter() {
-		return cache.requestsCounter();
+		synchronized (locker) {
+			return cache.requestsCounter();
+		}
 	}
 }

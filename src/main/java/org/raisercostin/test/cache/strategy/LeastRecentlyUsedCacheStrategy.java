@@ -17,8 +17,8 @@ import org.raisercostin.test.cache.storage.StorageStrategy;
  */
 public class LeastRecentlyUsedCacheStrategy<Key> implements CacheStrategy<Key> {
 	private final static org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(LeastRecentlyUsedCacheStrategy.class);
+	private final Queue<Key> keys = new LinkedList<Key>();
 	private int maxEntries;
-	private Queue<Key> keys;
 	private int counter = 0;
 	// statistics
 	private int all = 0;
@@ -26,7 +26,6 @@ public class LeastRecentlyUsedCacheStrategy<Key> implements CacheStrategy<Key> {
 
 	@SuppressWarnings("unchecked")
 	public LeastRecentlyUsedCacheStrategy(int maxEntries) {
-		this.keys = new LinkedList<Key>();
 		this.maxEntries = maxEntries;
 	}
 
