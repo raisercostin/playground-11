@@ -22,7 +22,7 @@ public class CacheTemplateTest {
 		int requests = exerciseCache1(cache);
 		assertEquals(requests, cache.requestsCounter());
 		assertEquals(3, cache.hitsCounter());
-		requests += exerciseCache2(cache,10);
+		requests += exerciseCache2(cache,100);
 		assertEquals(requests, cache.requestsCounter());
 		assertEquals(9, cache.hitsCounter());
 	}
@@ -33,7 +33,7 @@ public class CacheTemplateTest {
 		int requests = exerciseCache1(cache);
 		assertEquals(requests, cache.requestsCounter());
 		assertEquals(5, cache.hitsCounter());
-		requests += exerciseCache2(cache,10);
+		requests += exerciseCache2(cache,100);
 		assertEquals(requests, cache.requestsCounter());
 		assertEquals(14, cache.hitsCounter());
 	}
@@ -57,7 +57,8 @@ public class CacheTemplateTest {
 		pool.shutdown();
 		assertEquals(true,pool.awaitTermination(10, TimeUnit.SECONDS));
 		assertEquals(threads * cacheRequestsPerThread, cache.requestsCounter());
-		assertEquals(4, cache.hitsCounter());
+		//is not deterministic since we can't control the thread switch
+		//assertEquals(4, cache.hitsCounter());
 	}
 
 	private int exerciseCache1(CacheTemplate<Integer, String> cache) {

@@ -28,9 +28,13 @@ Evaluation criteria for both homeworks(in ascending order):
 2)performance
 
 
+DONE
+- independent cache replacement strategy: LRU, Random & test
+- independent cache storage: memory, disk & test
+- multithreading support & test
+- 2 levels cache
 
 TODO
-- multithreading support & test
 - 2 levels (multi levels)
 - performance
 - hits contests between cache strategies
