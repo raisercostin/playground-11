@@ -14,64 +14,64 @@ import org.raisercostin.test.cache.storage.StorageStrategy;
  * of all other cache-lines changes. LRU is actually a family of caching
  * algorithms with members including 2Q by Theodore Johnson and Dennis Shasha,
  * and LRU/K by Pat O'Neil, Betty O'Neil and Gerhard Weikum.
- *
+ * 
  * @author costin
  * @param <Key>
  */
 public class LeastRecentlyUsedCacheStrategy<Key> implements CacheStrategy<Key> {
-    private int maxEntries;
-    private Queue<Key> keys;
-    private int counter = 0;
-    // statistics
-    private int all = 0;
-    private int hits = 0;
+	private int maxEntries;
+	private Queue<Key> keys;
+	private int counter = 0;
+	// statistics
+	private int all = 0;
+	private int hits = 0;
 
-    @SuppressWarnings("unchecked")
-    public LeastRecentlyUsedCacheStrategy(int maxEntries) {
-	this.keys = new LinkedList<Key>();
-	this.maxEntries = maxEntries;
-    }
-
-    @Override
-    public <T> void initialize(StorageStrategy<Key, T> storage) {
-	//TODO improve the initialization without clearing the storage
-	storage.clear();
-    }
-
-    @Override
-    public Key update(Key key) {
-	// O(n) - might be externalized to StorageStrategy
-	boolean hit = keys.contains(key);
-	Key result = key;
-	if (hit) {
-	    hits++;
-	    // O(n) - removing a key in the middle
-	    keys.remove(key);
-	    counter--;
-	    result = key;
-	} else {
-	    if (counter >= maxEntries) {
-		result = keys.poll();
-		counter--;
-	    } else {
-		result = null;
-	    }
+	@SuppressWarnings("unchecked")
+	public LeastRecentlyUsedCacheStrategy(int maxEntries) {
+		this.keys = new LinkedList<Key>();
+		this.maxEntries = maxEntries;
 	}
-	keys.add(key);
-	counter++;
-	all++;
-	return result;
-    }
 
-    int countHits() {
-	return hits;
-    }
+	@Override
+	public <T> void initialize(StorageStrategy<Key, T> storage) {
+		// TODO improve the initialization without clearing the storage
+		storage.clear();
+	}
 
-    int countAll() {
-	return all;
-    }
+	@Override
+	public Key update(Key key) {
+		// O(n) - might be externalized to StorageStrategy
+		boolean hit = keys.contains(key);
+		Key result = key;
+		if (hit) {
+			hits++;
+			// O(n) - removing a key in the middle
+			keys.remove(key);
+			counter--;
+			result = key;
+		} else {
+			if (counter >= maxEntries) {
+				result = keys.poll();
+				counter--;
+			} else {
+				result = null;
+			}
+		}
+		keys.add(key);
+		counter++;
+		all++;
+		return result;
+	}
 
-    String state() {
-	return keys.toString();
-    }
+	int countHits() {
+		return hits;
+	}
+
+	int countAll() {
+		return all;
+	}
+
+	String state() {
+		return keys.toString();
+	}
 }

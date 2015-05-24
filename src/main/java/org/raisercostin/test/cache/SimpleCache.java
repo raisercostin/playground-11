@@ -9,64 +9,64 @@ import org.slf4j.LoggerFactory;
  * to the given replacement strategy.
  */
 public class SimpleCache<Key, Value> implements Cache<Key, Value> {
-    private final static org.slf4j.Logger LOG = LoggerFactory
-	    .getLogger(SimpleCache.class);
-    public final StorageStrategy<Key, Value> storage;
-    public final CacheStrategy<Key> strategy;
+	private final static org.slf4j.Logger LOG = LoggerFactory
+			.getLogger(SimpleCache.class);
+	public final StorageStrategy<Key, Value> storage;
+	public final CacheStrategy<Key> strategy;
 
-    public SimpleCache(StorageStrategy<Key, Value> storage,
-	    CacheStrategy<Key> replacement) {
-	replacement.initialize(storage);
-	this.storage = storage;
-	this.strategy = replacement;
-    }
-
-    @Override
-    public void put(Key key, Value value) {
-	// if (!storage.containsKey(key)) {
-	Key replacedKey = strategy.update(key);
-	if (replacedKey != null) {
-	    LOG.debug("add {} replacing {}", key, replacedKey);
-	    storage.remove(replacedKey);
-	} else {
-	    LOG.debug("add {}", key);
+	public SimpleCache(StorageStrategy<Key, Value> storage,
+			CacheStrategy<Key> replacement) {
+		replacement.initialize(storage);
+		this.storage = storage;
+		this.strategy = replacement;
 	}
-	// }
-	storage.save(key, value);
-	LOG.debug("size={}", storage.size());
-    }
 
-    @Override
-    public Value get(Key key) {
-	return storage.loadOr(key, null);
-    }
+	@Override
+	public void put(Key key, Value value) {
+		// if (!storage.containsKey(key)) {
+		Key replacedKey = strategy.update(key);
+		if (replacedKey != null) {
+			LOG.debug("add {} replacing {}", key, replacedKey);
+			storage.remove(replacedKey);
+		} else {
+			LOG.debug("add {}", key);
+		}
+		// }
+		storage.save(key, value);
+		LOG.debug("size={}", storage.size());
+	}
 
-    @Override
-    public boolean containsKey(Key key) {
-	return storage.containsKey(key);
-    }
+	@Override
+	public Value get(Key key) {
+		return storage.loadOr(key, null);
+	}
 
-    @Override
-    public Value remove(Key key) {
-	throw new IllegalAccessError(
-		"Method should not be exposed. Is an operation meant for storage. @see put operation.");
-	// Value result = get(key);
-	// storage.remove(key);
-	// return result;
-    }
+	@Override
+	public boolean containsKey(Key key) {
+		return storage.containsKey(key);
+	}
 
-    @Override
-    public boolean isEmpty() {
-	return storage.size() == 0;
-    }
+	@Override
+	public Value remove(Key key) {
+		throw new IllegalAccessError(
+				"Method should not be exposed. Is an operation meant for storage. @see put method.");
+		// Value result = get(key);
+		// storage.remove(key);
+		// return result;
+	}
 
-    @Override
-    public int size() {
-	return storage.size();
-    }
+	@Override
+	public boolean isEmpty() {
+		return storage.size() == 0;
+	}
 
-    @Override
-    public void clear() {
-	storage.clear();
-    }
+	@Override
+	public int size() {
+		return storage.size();
+	}
+
+	@Override
+	public void clear() {
+		storage.clear();
+	}
 }
