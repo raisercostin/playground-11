@@ -6,8 +6,7 @@ import java.util.Map;
 /**
  * Storage is made in memory using a hashMap.
  * 
- * It is not thread safe since the safety should be assured by the client of
- * this class.
+ * It is not thread safe since the safety should be assured by the client of this class.
  */
 public class MemoryStorageStrategy<K, V> implements StorageStrategy<K, V> {
 	private Map<K, V> map = new HashMap<K, V>();

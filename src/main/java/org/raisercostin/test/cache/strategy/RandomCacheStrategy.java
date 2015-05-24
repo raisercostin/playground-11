@@ -5,9 +5,8 @@ import java.util.Random;
 import org.raisercostin.test.cache.storage.StorageStrategy;
 
 /**
- * Random Replacement (RR) Randomly selects a candidate item and discards it to
- * make space when necessary. This algorithm does not require keeping any
- * information about the access history. For its simplicity, it has been used in
+ * Random Replacement (RR) Randomly selects a candidate item and discards it to make space when necessary. This
+ * algorithm does not require keeping any information about the access history. For its simplicity, it has been used in
  * ARM processors.[5] It admits efficient stochastic simulation.[6]
  * 
  * For O(n) the strategy could check if the key is already in cache.

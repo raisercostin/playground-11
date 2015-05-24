@@ -5,17 +5,15 @@ import org.raisercostin.test.cache.strategy.CacheStrategy;
 import org.slf4j.LoggerFactory;
 
 /**
- * Class that have the responsibility of storing/removing the values according
- * to the given replacement strategy.
+ * Class that have the responsibility of storing/removing the values according to the given replacement strategy.
  */
-public class SimpleCache<Key, Value> implements Cache<Key, Value> {
-	private final static org.slf4j.Logger LOG = LoggerFactory
-			.getLogger(SimpleCache.class);
+public class SimpleCache<Key, Value> implements ObservableCache<Key, Value> {
+	private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(SimpleCache.class);
 	public final StorageStrategy<Key, Value> storage;
 	public final CacheStrategy<Key> strategy;
+	private int hits = 0;
 
-	public SimpleCache(StorageStrategy<Key, Value> storage,
-			CacheStrategy<Key> replacement) {
+	public SimpleCache(StorageStrategy<Key, Value> storage, CacheStrategy<Key> replacement) {
 		replacement.initialize(storage);
 		this.storage = storage;
 		this.strategy = replacement;
@@ -25,6 +23,8 @@ public class SimpleCache<Key, Value> implements Cache<Key, Value> {
 	public void put(Key key, Value value) {
 		// if (!storage.containsKey(key)) {
 		Key replacedKey = strategy.update(key);
+		if(replacedKey==key)
+			hits++;
 		if (replacedKey != null) {
 			LOG.debug("add {} replacing {}", key, replacedKey);
 			storage.remove(replacedKey);
@@ -68,5 +68,10 @@ public class SimpleCache<Key, Value> implements Cache<Key, Value> {
 	@Override
 	public void clear() {
 		storage.clear();
+	}
+
+	@Override
+	public int hits() {
+		return hits;
 	}
 }

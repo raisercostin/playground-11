@@ -6,13 +6,10 @@ import java.util.Objects;
 import org.apache.commons.io.FileUtils;
 
 /**
- * Stores keys and values of type string in separate files under a storage
- * folder. Could be optimized if needed by storing in a single file with direct
- * seek access if a maximum size for each value is added or using other
- * strategies.
+ * Stores keys and values of type string in separate files under a storage folder. Could be optimized if needed by
+ * storing in a single file with direct seek access if a maximum size for each value is added or using other strategies.
  * 
- * It is not thread safe since the safety should be assured by the client of
- * this class.
+ * It is not thread safe since the safety should be assured by the client of this class.
  * 
  * @author costin
  */

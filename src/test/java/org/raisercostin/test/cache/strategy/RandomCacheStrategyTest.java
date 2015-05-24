@@ -11,8 +11,7 @@ import org.raisercostin.test.cache.strategy.RandomCacheStrategy;
 public class RandomCacheStrategyTest {
 	@Test
 	public void testFifoReplacementOperations() {
-		CacheStrategy<Integer> rep = new RandomCacheStrategy<Integer>(5,
-				new Random(10));
+		CacheStrategy<Integer> rep = new RandomCacheStrategy<Integer>(5, new Random(10));
 		assertEq(null, rep.update(1));
 		assertEq(null, rep.update(2));
 		assertEq(1, rep.update(3));
