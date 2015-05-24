@@ -32,6 +32,7 @@ The proposed solution shall have meaningful test coverage.
 
 # DONE
 
+- design ![](https://github.com/raisercostin/playground-11/blob/master/all.png?raw=true)
 - independent cache replacement strategy: LRU, Random & test
 - independent cache storage: memory, disk & test
 - multithreading support & test
