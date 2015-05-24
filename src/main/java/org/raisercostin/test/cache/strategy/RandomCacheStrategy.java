@@ -1,5 +1,6 @@
 package org.raisercostin.test.cache.strategy;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import org.raisercostin.test.cache.storage.StorageStrategy;
@@ -8,9 +9,9 @@ import org.raisercostin.test.cache.storage.StorageStrategy;
  * Random Replacement (RR) Randomly selects a candidate item and discards it to make space when necessary. This
  * algorithm does not require keeping any information about the access history. For its simplicity, it has been used in
  * ARM processors.[5] It admits efficient stochastic simulation.[6]
- * 
+ *
  * For O(n) the strategy could check if the key is already in cache.
- * 
+ *
  * @author costin
  * @param <Key>
  */
@@ -47,5 +48,10 @@ public class RandomCacheStrategy<Key> implements CacheStrategy<Key> {
 			if (e == v || v != null && v.equals(e))
 				return true;
 		return false;
+	}
+
+	@Override
+	public String displayState() {
+		return Arrays.toString(keys);
 	}
 }

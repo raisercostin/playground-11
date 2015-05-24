@@ -12,6 +12,7 @@ public class SimpleCache<Key, Value> implements ObservableCache<Key, Value> {
 	public final StorageStrategy<Key, Value> storage;
 	public final CacheStrategy<Key> strategy;
 	private int hits = 0;
+	private int requests = 0;
 
 	public SimpleCache(StorageStrategy<Key, Value> storage, CacheStrategy<Key> replacement) {
 		replacement.initialize(storage);
@@ -20,24 +21,16 @@ public class SimpleCache<Key, Value> implements ObservableCache<Key, Value> {
 	}
 
 	@Override
-	public void put(Key key, Value value) {
-		// if (!storage.containsKey(key)) {
-		Key replacedKey = strategy.update(key);
-		if(replacedKey==key)
-			hits++;
-		if (replacedKey != null) {
-			LOG.debug("add {} replacing {}", key, replacedKey);
-			storage.remove(replacedKey);
-		} else {
-			LOG.debug("add {}", key);
-		}
-		// }
-		storage.save(key, value);
-		LOG.debug("size={}", storage.size());
-	}
-
-	@Override
 	public Value get(Key key) {
+		requests++;
+		Key replacedKey = strategy.update(key);
+		boolean hit = replacedKey == key;
+		LOG.debug("add {} replacing {} => {} {}", key, replacedKey, strategy.displayState(), hit ? "hit" : "");
+		if (hit) {
+			hits++;
+		} else if (replacedKey != null) {
+			storage.remove(replacedKey);
+		}
 		return storage.loadOr(key, null);
 	}
 
@@ -47,12 +40,14 @@ public class SimpleCache<Key, Value> implements ObservableCache<Key, Value> {
 	}
 
 	@Override
+	public void put(Key key, Value value) {
+		storage.save(key, value);
+	}
+
+	@Override
 	public Value remove(Key key) {
 		throw new IllegalAccessError(
-				"Method should not be exposed. Is an operation meant for storage. @see put method.");
-		// Value result = get(key);
-		// storage.remove(key);
-		// return result;
+				"Method should not be exposed. Is an internal cache operation done on storage, goverened by the replacement caching strategy.");
 	}
 
 	@Override
@@ -71,7 +66,12 @@ public class SimpleCache<Key, Value> implements ObservableCache<Key, Value> {
 	}
 
 	@Override
-	public int hits() {
+	public int hitsCounter() {
 		return hits;
+	}
+
+	@Override
+	public int requestsCounter() {
+		return requests;
 	}
 }

@@ -18,9 +18,9 @@ public class LeastRecentlyUsedCacheStrategyTest {
 				{ 2, 3 }, { 3, 0 }, { 0, 4 }, { 3, 3 }, { 2, 2 }, { 1, 0 }, { 2, 2 } };
 		// @formatter:on
 		for (int i = 0; i < val.length; i++) {
-			String before = cache.state();
+			String before = cache.displayState();
 			Integer actual = cache.update(val[i][0]);
-			String after = cache.state();
+			String after = cache.displayState();
 			LOG.debug("after = {}", after);
 			assertEquals("Key " + val[i][0] + " should replace key " + val[i][1] + " but replaced " + actual,
 					val[i][1], actual);

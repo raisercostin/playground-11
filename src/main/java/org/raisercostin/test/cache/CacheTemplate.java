@@ -1,14 +1,21 @@
 package org.raisercostin.test.cache;
 
 import java.util.Map;
+import java.util.Random;
 
 import org.raisercostin.test.cache.storage.MemoryStorageStrategy;
 import org.raisercostin.test.cache.strategy.LeastRecentlyUsedCacheStrategy;
+import org.raisercostin.test.cache.strategy.RandomCacheStrategy;
 
 public class CacheTemplate<Key, Value> {
 	public static <Key, Value> CacheTemplate<Key, Value> createSimpleMemoryLRU(int maxEntries) {
 		return create(new SimpleCache<Key, Value>(new MemoryStorageStrategy<Key, Value>(),
 				new LeastRecentlyUsedCacheStrategy<Key>(maxEntries)));
+	}
+
+	public static <Key, Value> CacheTemplate<Key, Value> createSimpleMemoryRandom(int maxEntries) {
+		return create(new SimpleCache<Key, Value>(new MemoryStorageStrategy<Key, Value>(),
+				new RandomCacheStrategy<Key>(maxEntries,new Random(10))));
 	}
 
 	public static <Key, Value> CacheTemplate<Key, Value> create(ObservableCache<Key, Value> cache) {
@@ -58,7 +65,11 @@ public class CacheTemplate<Key, Value> {
 		return result;
 	}
 
-	public int hits() {
-		return cache.hits();
+	public int hitsCounter() {
+		return cache.hitsCounter();
+	}
+
+	public int requestsCounter() {
+		return cache.requestsCounter();
 	}
 }

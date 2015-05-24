@@ -11,11 +11,12 @@ import org.raisercostin.test.cache.storage.StorageStrategy;
  * "Least Recently Used" cache-line based on age-bits. In such an implementation, every time a cache-line is used, the
  * age of all other cache-lines changes. LRU is actually a family of caching algorithms with members including 2Q by
  * Theodore Johnson and Dennis Shasha, and LRU/K by Pat O'Neil, Betty O'Neil and Gerhard Weikum.
- * 
+ *
  * @author costin
  * @param <Key>
  */
 public class LeastRecentlyUsedCacheStrategy<Key> implements CacheStrategy<Key> {
+	private final static org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(LeastRecentlyUsedCacheStrategy.class);
 	private int maxEntries;
 	private Queue<Key> keys;
 	private int counter = 0;
@@ -39,25 +40,25 @@ public class LeastRecentlyUsedCacheStrategy<Key> implements CacheStrategy<Key> {
 	public Key update(Key key) {
 		// O(n) - might be externalized to StorageStrategy
 		boolean hit = keys.contains(key);
-		Key result = key;
+		Key replacedKey = key;
 		if (hit) {
 			hits++;
 			// O(n) - removing a key in the middle
 			keys.remove(key);
 			counter--;
-			result = key;
+			replacedKey = key;
 		} else {
 			if (counter >= maxEntries) {
-				result = keys.poll();
+				replacedKey = keys.poll();
 				counter--;
 			} else {
-				result = null;
+				replacedKey = null;
 			}
 		}
 		keys.add(key);
 		counter++;
 		all++;
-		return result;
+		return replacedKey;
 	}
 
 	int countHits() {
@@ -68,7 +69,8 @@ public class LeastRecentlyUsedCacheStrategy<Key> implements CacheStrategy<Key> {
 		return all;
 	}
 
-	String state() {
+	@Override
+	public String displayState() {
 		return keys.toString();
 	}
 }
