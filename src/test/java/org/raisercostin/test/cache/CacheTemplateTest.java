@@ -2,6 +2,8 @@ package org.raisercostin.test.cache;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Random;
+
 import org.junit.Test;
 
 public class CacheTemplateTest {
@@ -15,24 +17,39 @@ public class CacheTemplateTest {
 	@Test
 	public void testBasicRandomStrategy() {
 		CacheTemplate<Integer, String> cache = CacheTemplate.createSimpleMemoryRandom(3);
-		Integer[] vals = exerciseCache(cache);
-		assertEquals(vals.length,cache.requestsCounter());
-		assertEquals(3,cache.hitsCounter());
+		int requests = exerciseCache1(cache);
+		assertEquals(requests, cache.requestsCounter());
+		assertEquals(3, cache.hitsCounter());
+		requests += exerciseCache2(cache);
+		assertEquals(requests, cache.requestsCounter());
+		assertEquals(9, cache.hitsCounter());
 	}
 
 	@Test
 	public void testBasicLRU() {
 		CacheTemplate<Integer, String> cache = CacheTemplate.createSimpleMemoryLRU(3);
-		Integer[] vals = exerciseCache(cache);
-		assertEquals(vals.length,cache.requestsCounter());
-		assertEquals(5,cache.hitsCounter());
+		int requests = exerciseCache1(cache);
+		assertEquals(requests, cache.requestsCounter());
+		assertEquals(5, cache.hitsCounter());
+		requests += exerciseCache2(cache);
+		assertEquals(requests, cache.requestsCounter());
+		assertEquals(14, cache.hitsCounter());
 	}
 
-	private Integer[] exerciseCache(CacheTemplate<Integer, String> cache) {
+	private int exerciseCache1(CacheTemplate<Integer, String> cache) {
 		Integer[] vals = { 7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2, 1, 2 };
 		for (Integer i : vals) {
 			cache.getOr(i, "value" + i);
 		}
-		return vals;
+		return vals.length;
+	}
+
+	private int exerciseCache2(CacheTemplate<Integer, String> cache) {
+		Random r = new Random(11);
+		for (int i = 0; i < 100; i++) {
+			Integer j = r.nextInt(50);
+			cache.getOr(j, "value" + j);
+		}
+		return 100;
 	}
 }
