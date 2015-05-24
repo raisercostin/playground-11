@@ -88,24 +88,24 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="10" language="java" name="org.raisercostin.test.cache.CascadedCache" project="11" 
-    file="/11/src/main/java/org/raisercostin/test/cache/CascadedCache.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="757" y="-247"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <interface id="11" language="java" name="org.raisercostin.test.cache.ObservableCache" project="11" 
+  <interface id="10" language="java" name="org.raisercostin.test.cache.ObservableCache" project="11" 
     file="/11/src/main/java/org/raisercostin/test/cache/ObservableCache.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="536" y="-503"/>    
+    <position height="-1" width="-1" x="551" y="-515"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
+  <class id="11" language="java" name="org.raisercostin.test.cache.CascadedCache" project="11" 
+    file="/11/src/main/java/org/raisercostin/test/cache/CascadedCache.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="825" y="-289"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
   <association id="12">    
     <end type="SOURCE" refId="9" navigable="false">      
       <attribute id="13" name="cache"/>      
@@ -123,7 +123,7 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <generalization id="18">    
-    <end type="SOURCE" refId="11"/>    
+    <end type="SOURCE" refId="10"/>    
     <end type="TARGET" refId="8"/>  
   </generalization>  
   <realization id="19">    
@@ -131,31 +131,31 @@
     <end type="TARGET" refId="1"/>  
   </realization>  
   <realization id="20">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="8"/>  
-  </realization>  
-  <realization id="21">    
     <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="4"/>  
   </realization>  
-  <association id="22">    
+  <association id="21">    
     <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="23" name="storage"/>      
-      <multiplicity id="24" minimum="0" maximum="1"/>    
+      <attribute id="22" name="storage"/>      
+      <multiplicity id="23" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="25">    
+  <realization id="24">    
     <end type="SOURCE" refId="6"/>    
     <end type="TARGET" refId="4"/>  
   </realization>  
+  <realization id="25">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="10"/>  
+  </realization>  
   <association id="26">    
-    <end type="SOURCE" refId="10" navigable="false">      
+    <end type="SOURCE" refId="11" navigable="false">      
       <attribute id="27" name="first"/>      
       <multiplicity id="28" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
+    <end type="TARGET" refId="10" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <realization id="29">    
@@ -164,14 +164,14 @@
   </realization>  
   <realization id="30">    
     <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="11"/>  
+    <end type="TARGET" refId="10"/>  
   </realization>  
   <association id="31">    
-    <end type="SOURCE" refId="10" navigable="false">      
+    <end type="SOURCE" refId="11" navigable="false">      
       <attribute id="32" name="second"/>      
       <multiplicity id="33" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
+    <end type="TARGET" refId="10" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

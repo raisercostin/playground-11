@@ -8,12 +8,13 @@ import org.apache.commons.io.FileUtils;
 /**
  * Stores keys and values of type string in separate files under a storage folder. Could be optimized if needed by
  * storing in a single file with direct seek access if a maximum size for each value is added or using other strategies.
- * 
+ *
  * It is not thread safe since the safety should be assured by the client of this class.
- * 
+ *
  * @author costin
  */
-public class DiskStorageStrategy<Key> implements StorageStrategy<Key, String> {
+public class DiskStorageStrategy<Key, Value> implements StorageStrategy<Key, Value> {
+	private final static org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(DiskStorageStrategy.class);
 	private static final String PREFIX = "cache-";
 	private static final String SUFFIX = ".val";
 	private static FilenameFilter filter = new FilenameFilter() {
@@ -27,16 +28,26 @@ public class DiskStorageStrategy<Key> implements StorageStrategy<Key, String> {
 
 	public DiskStorageStrategy(File root) {
 		Objects.requireNonNull(root);
+		LOG.debug("creating CacheDiskStorage at ["+root.getAbsolutePath()+"]");
 		this.root = root;
 	}
 
 	@Override
-	public void save(Key key, String value) {
+	public void save(Key key, Value value) {
 		try {
-			FileUtils.writeStringToFile(child(key), value);
+			FileUtils.writeStringToFile(child(key), serializeValue(value));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	/** Could be overridden in order to change the Key serialization algorithm */
+	protected String serializeValue(Value value) {
+		return value.toString();
+	}
+
+	private Value deserializeValue(String value) {
+		return (Value) value;
 	}
 
 	/** Could be overridden in order to change the Key serialization algorithm */
@@ -50,11 +61,11 @@ public class DiskStorageStrategy<Key> implements StorageStrategy<Key, String> {
 	}
 
 	@Override
-	public String loadOr(Key key, String defaultValue) {
+	public Value loadOr(Key key, Value defaultValue) {
 		File file = child(key);
 		if (file.exists()) {
 			try {
-				return FileUtils.readFileToString(file);
+				return deserializeValue(FileUtils.readFileToString(file));
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
@@ -65,10 +76,12 @@ public class DiskStorageStrategy<Key> implements StorageStrategy<Key, String> {
 
 	@Override
 	public void remove(Key key) {
-		try {
-			FileUtils.forceDelete(child(key));
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+		if (child(key).exists()) {
+			try {
+				FileUtils.forceDelete(child(key));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 

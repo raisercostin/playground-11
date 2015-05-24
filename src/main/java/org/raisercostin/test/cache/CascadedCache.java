@@ -3,54 +3,70 @@ package org.raisercostin.test.cache;
 /**
  * Class that delegate to next cache level if operations miss.
  */
-public class CascadedCache<K, V> implements Cache<K, V> {
-	private Cache<K, V> first;
-	private Cache<K, V> second;
+public class CascadedCache<Key, Value> implements ObservableCache<Key, Value> {
+	private ObservableCache<Key, Value> first;
+	private ObservableCache<Key, Value> second;
 
-	public CascadedCache(Cache<K, V> first, Cache<K, V> second) {
+	public CascadedCache(ObservableCache<Key, Value> first, ObservableCache<Key, Value> second) {
 		this.first = first;
 		this.second = second;
 	}
 
 	@Override
-	public void put(K key, V value) {
-		// TODO Auto-generated method stub
+	public void put(Key key, Value value) {
+		// how do you cascade put from CacheTemplate?
+		first.put(key, value);
+		second.put(key, value);
 	}
 
 	@Override
-	public V get(K key) {
-		// TODO Auto-generated method stub
-		return null;
+	public Value get(Key key) {
+		Value value1 = first.get(key);
+		if (value1 != null)
+			return value1;
+		else {
+			return second.get(key);
+		}
 	}
 
 	@Override
-	public boolean containsKey(K key) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean containsKey(Key key) {
+		return first.containsKey(key) || second.containsKey(key);
 	}
 
 	@Override
-	public V remove(K key) {
-		// TODO Auto-generated method stub
-		return null;
+	public Value remove(Key key) {
+		throw new IllegalAccessError(
+				"Method should not be exposed. Is an internal cache operation done on storage, goverened by the replacement caching strategy.");
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return first.isEmpty() && second.isEmpty();
 	}
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		throw new IllegalAccessError(
+				"Method should not be exposed. Is an internal cache operation done on storage. For multiple levels cache it doesn't have too much sense.");
+		// return first.size() + second.size();
 	}
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
+		//throw new IllegalAccessError("Method should not be exposed. Is an internal cache operation done on storage.");
+		first.clear();
+		second.clear();
+	}
 
+	@Override
+	public int hitsCounter() {
+		return first.hitsCounter()+second.hitsCounter();
+	}
+
+	@Override
+	public int requestsCounter() {
+		return first.requestsCounter();
 	}
 
 }

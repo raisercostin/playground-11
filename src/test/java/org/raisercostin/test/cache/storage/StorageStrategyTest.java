@@ -10,7 +10,7 @@ import org.raisercostin.test.cache.storage.*;
 public class StorageStrategyTest {
 	@Test
 	public void testDiskStorageBasicOperations() {
-		StorageStrategy<String, String> storage = new DiskStorageStrategy<String>(new File("target/storage"));
+		StorageStrategy<String, String> storage = new DiskStorageStrategy<String,String>(new File("target/storage"));
 		doBasicOperations(storage);
 	}
 

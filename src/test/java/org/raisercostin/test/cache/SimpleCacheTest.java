@@ -12,7 +12,7 @@ import org.raisercostin.test.cache.strategy.*;
 
 public class SimpleCacheTest {
 	private final static org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(SimpleCacheTest.class);
-	private DiskStorageStrategy<Integer> storage;
+	private DiskStorageStrategy<Integer,String> storage;
 	private SimpleCache<Integer, String> cache;
 	private CacheTemplate<Integer, String> c;
 	private Map<Integer, String> data;
@@ -56,7 +56,7 @@ public class SimpleCacheTest {
 
 	private <Key> void testInvariants(String name, CacheStrategy<Integer> cacheStrategy, int SEED,
 			int CACHE_MAX_ENTRIES, int DATA_SIZE) {
-		storage = new DiskStorageStrategy<Integer>(new File("target/" + name));
+		storage = new DiskStorageStrategy<Integer,String>(new File("target/" + name));
 		storage.clear();
 		cache = new SimpleCache<Integer, String>(storage, cacheStrategy);
 

@@ -25,7 +25,7 @@ public class SimpleCache<Key, Value> implements ObservableCache<Key, Value> {
 		requests++;
 		Key replacedKey = strategy.update(key);
 		boolean hit = replacedKey == key;
-		LOG.debug("add {} replacing {} => {} {}", key, replacedKey, strategy.displayState(), hit ? "hit" : "");
+		LOG.debug("{}: add {} replacing {} => {} {}", this, key, replacedKey, strategy.displayState(), hit ? "hit" : "");
 		if (hit) {
 			hits++;
 		} else if (replacedKey != null) {

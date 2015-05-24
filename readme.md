@@ -32,9 +32,7 @@ DONE
 - independent cache replacement strategy: LRU, Random & test
 - independent cache storage: memory, disk & test
 - multithreading support & test
-- 2 levels cache
-
-TODO
-- 2 levels (multi levels)
+- 2 levels cache (multi levels by combining 2 CascadedCache) & test
 - performance
-- hits contests between cache strategies
+
+Would be nice to have hits contests between caches strategies :D:D

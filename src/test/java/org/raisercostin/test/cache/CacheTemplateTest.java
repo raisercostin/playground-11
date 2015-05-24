@@ -61,6 +61,18 @@ public class CacheTemplateTest {
 		//assertEquals(4, cache.hitsCounter());
 	}
 
+	@Test
+	public void testTwoLevelCache() {
+		CacheTemplate<Integer, String> cache = CacheTemplate.createTwoLevelCache(3,10);
+		cache.clear();
+		int requests = exerciseCache1(cache);
+		assertEquals(requests, cache.requestsCounter());
+		assertEquals(12, cache.hitsCounter());
+		requests += exerciseCache2(cache,100);
+		assertEquals(requests, cache.requestsCounter());
+		assertEquals(30, cache.hitsCounter());
+	}
+
 	private int exerciseCache1(CacheTemplate<Integer, String> cache) {
 		Integer[] vals = { 7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2, 1, 2 };
 		for (Integer i : vals) {
