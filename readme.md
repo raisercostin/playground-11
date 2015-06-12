@@ -39,3 +39,11 @@ The proposed solution shall have meaningful test coverage.
 - 2 levels cache (multi levels by combining 2 CascadedCache) & test
 - performance
 - Would be nice to have hits contests between caches strategies :D:D
+
+# ToDo
+
+- key should be anything so the file name should be computed differently
+- value should be anything so it needs to be serialized
+- if you have many entries you shouldn't store all of them in one folder.
+- use priority queue for strategies: LRU, LFU, FIFO
+- on multi-cache the values shouldn't be put on DiskCache if enough space is in memory. So a removal in memory should put it on disk?
